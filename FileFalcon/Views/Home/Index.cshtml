@@ -2,7 +2,29 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="button" onclick="uploadFile()">Upload</button>
+</form>
+
+<script>
+    async function uploadFile() {
+        const formData = new FormData(document.getElementById("uploadForm"));
+
+        try {
+            const response = await fetch("/UploadFile", {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                const res = await response.json();
+                console.log(res);
+            } else {
+                alert("File upload failed");
+            }
+        } catch (error) {
+            console.error("Error during file upload:", error);
+        }
+    }
+</script>
